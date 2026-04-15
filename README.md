@@ -4,17 +4,14 @@ LongBench evaluation portal static website.
 
 ## Deploy On GitHub Pages
 
-This website is a static site. GitHub Pages can serve it directly from the repository root.
+This website is a static site. The repository includes a GitHub Actions workflow for GitHub Pages.
 
 1. Create a new GitHub repository, for example `LongBench_Website`.
 2. Push this local repository to GitHub.
 3. Open the GitHub repository page.
 4. Go to `Settings` -> `Pages`.
-5. Under `Build and deployment`, choose:
-   - Source: `Deploy from a branch`
-   - Branch: `main`
-   - Folder: `/ (root)`
-6. Save the settings.
+5. Under `Build and deployment`, choose `GitHub Actions`.
+6. Push to `main`; the `Deploy GitHub Pages` workflow will publish the site.
 
 The website will be available at:
 
