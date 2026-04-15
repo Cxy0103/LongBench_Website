@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LongBench Evaluation</title>
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#submit" aria-label="LongBench home">
+        <span class="brand-mark">LB</span>
+        <span>LongBench</span>
+      </a>
+      <nav class="nav-tabs" aria-label="Primary navigation">
+        <button class="nav-tab is-active" type="button" data-page-target="submit">Submit</button>
+        <button class="nav-tab" type="button" data-page-target="leaderboard">Leaderboard</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro-band" aria-labelledby="page-title">
+      <h1 id="page-title">LongBench Evaluation</h1>
+    </section>
+
+    <section id="page-submit" class="page-section" data-page="submit">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Submission</p>
+          <h2>Policy Package</h2>
+        </div>
+      </div>
+
+      <form id="submit-form" class="form-panel">
+        <div class="field">
+          <label for="submit-name">Name <span class="req">*</span></label>
+          <input id="submit-name" name="name" type="text" autocomplete="name" required />
+        </div>
+
+        <div class="field">
+          <label for="submit-affiliation">University / Affiliation <span class="req">*</span></label>
+          <input id="submit-affiliation" name="affiliation" type="text" autocomplete="organization" required />
+        </div>
+
+        <div class="field">
+          <label for="submit-email">Email Address <span class="req">*</span></label>
+          <input id="submit-email" name="email" type="email" autocomplete="email" required />
+        </div>
+
+        <div class="field">
+          <span class="label-text">Does your policy server support the inference API in the GitHub repo? <span class="req">*</span></span>
+          <div class="radio-row">
+            <label><input type="radio" name="apiSupport" value="Yes" required /> Yes</label>
+            <label><input type="radio" name="apiSupport" value="No" required /> No</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="submit-policy">Policy Name <span class="req">*</span></label>
+          <input id="submit-policy" name="policyName" type="text" placeholder="e.g. my_policy_v1" required />
+        </div>
+
+        <div class="field-grid">
+          <div class="field">
+            <label for="submit-ip">Policy Server IP <span class="req">*</span></label>
+            <input id="submit-ip" name="serverIp" type="text" placeholder="12.34.56.78" required />
+          </div>
+          <div class="field">
+            <label for="submit-port">Policy Server Port <span class="req">*</span></label>
+            <input id="submit-port" name="serverPort" type="number" min="1" max="65535" placeholder="8000" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="submit-file">Model Upload <span class="req">*</span></label>
+          <input id="submit-file" name="modelFile" type="file" accept=".zip,.tar,.tar.gz,.pt,.pth,.ckpt,.safetensors,.onnx" required />
+        </div>
+
+        <div class="field">
+          <span class="label-text">Open-source policy? <span class="req">*</span></span>
+          <div class="radio-row">
+            <label><input type="radio" name="openSource" value="Yes" required /> Yes</label>
+            <label><input type="radio" name="openSource" value="No" required /> No</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="submit-notes">Notes</label>
+          <textarea id="submit-notes" name="notes" placeholder="Anything reviewers should know"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button class="button button-primary" type="submit">Submit</button>
+          <button class="button button-secondary" type="button" id="clear-form">Clear</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="page-leaderboard" class="page-section is-hidden" data-page="leaderboard">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Results</p>
+          <h2>Policy Leaderboard</h2>
+        </div>
+        <div class="toolbar">
+          <label class="filter-control">
+            <input type="checkbox" id="open-source-only" />
+            Open-source only
+          </label>
+          <button class="button button-secondary" type="button" id="refresh-leaderboard">Refresh</button>
+          <button class="button button-secondary" type="button" id="export-leaderboard">Export JSON</button>
+        </div>
+      </div>
+
+      <div class="table-meta">Last updated: <span id="last-updated">-</span></div>
+
+      <div class="leaderboard-tabs" aria-label="Leaderboard views">
+        <button class="leaderboard-tab is-active" type="button" data-leaderboard-view-target="overview">Overview</button>
+        <button class="leaderboard-tab" type="button" data-leaderboard-view-target="task">By Task</button>
+        <button class="leaderboard-tab" type="button" data-leaderboard-view-target="capability">By Capability</button>
+      </div>
+
+      <div class="leaderboard-view" data-leaderboard-view="overview">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Rank</th>
+                <th class="policy-heading" scope="col">Policy</th>
+                <th scope="col">Context-Independent</th>
+                <th scope="col">Context-Dependent</th>
+                <th scope="col">Average</th>
+                <th scope="col">Open Source</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="leaderboard-view is-hidden" data-leaderboard-view="task">
+        <div id="task-score-tables" class="score-table-stack"></div>
+      </div>
+
+      <div class="leaderboard-view is-hidden" data-leaderboard-view="capability">
+        <p class="table-note">
+          Context-Independent: PD = Phase Dependence, IP = Iterative Progress, EA = Error Accumulation, TW = Temporal Windows.
+        </p>
+        <p class="table-note">
+          Context-Dependent: CP = Completion, CT = Count, SB = Subtask-Branch, CE = Cross-Episode.
+        </p>
+        <div id="capability-score-tables" class="score-table-stack"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="./data/leaderboard.js"></script>
+  <script src="./assets/js/app.js"></script>
+</body>
+</html>
