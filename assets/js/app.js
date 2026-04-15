@@ -342,11 +342,6 @@
     const data = new FormData(submitForm);
     const file = data.get("modelFile");
 
-    if (!file || !file.name) {
-      toast("Choose a model file.");
-      return;
-    }
-
     const serverPort = Number(data.get("serverPort"));
     if (!serverPort || serverPort < 1 || serverPort > 65535) {
       toast("Server port must be between 1 and 65535.");
@@ -362,14 +357,13 @@
       leaderboardRowId: rowId,
       name: String(data.get("name") || "").trim(),
       affiliation: String(data.get("affiliation") || "").trim(),
-      email: String(data.get("email") || "").trim(),
       apiSupport: data.get("apiSupport"),
       policyName: String(data.get("policyName") || "").trim(),
       serverIp: String(data.get("serverIp") || "").trim(),
       serverPort,
       openSource: data.get("openSource"),
       notes: String(data.get("notes") || "").trim(),
-      modelFileName: file.name,
+      modelFileName: file && file.name ? file.name : "",
       createdAt: now,
       updatedAt: now
     };

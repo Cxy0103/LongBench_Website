@@ -30,15 +30,13 @@
 - `id`
 - `name`
 - `affiliation`
-- `email`
 - `api_support`
 - `policy_name`
 - `server_ip`
 - `server_port`
 - `open_source`
-- `will_email`
 - `notes`
-- `model_file_uri`
+- `model_file_uri`: optional
 - `status`: `queued | running | failed | completed | published`
 - `created_at`
 - `updated_at`
@@ -75,14 +73,12 @@ Fields:
 
 - `name`
 - `affiliation`
-- `email`
 - `apiSupport`
 - `policyName`
 - `serverIp`
 - `serverPort`
-- `modelFile`
+- `modelFile`: optional
 - `openSource`
-- `willEmail`
 - `notes`
 
 Response:
